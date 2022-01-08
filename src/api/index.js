@@ -1,7 +1,6 @@
 import React from "react";
 
-const BASE_URL =
-  "https://strangers-things.herokuapp.com/api/2110-FT-PT-WEB-PT/";
+const BASE_URL = "https://strangers-things.herokuapp.com/api/2110-FT-PT-WEB-PT";
 
 export const fetchPosts = async () => {
   try {
@@ -23,7 +22,7 @@ export const login = async (username, password) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user: { 
+        user: {
           username,
           password,
         },
@@ -32,6 +31,28 @@ export const login = async (username, password) => {
     const {
       data: { token },
     } = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const register = async (username, password) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: {
+          username,
+          password,
+        },
+      }),
+    });
+    const {
+      data: { token, message },
+    } = await response.json();
+    return token;
   } catch (error) {
     console.error(error);
   }

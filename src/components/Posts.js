@@ -18,11 +18,11 @@ const Posts = () => {
   }, []);
 
   return (
-    <div classname="posts">
+    <div className="posts">
       {posts.length > 0 &&
         posts.map(({ _id, description }) => {
           return (
-            <div classname="post" key={_id}>
+            <div className="post" key={_id}>
               {description}
             </div>
           );

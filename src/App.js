@@ -1,26 +1,27 @@
-import React from 'react';
-import './App.css';
-import { useState, useEffect } from 'react';
-//import { Routes, Route, Link} from 'react-router-dom';
-import { Posts, Login, Register } from './components'
+import "./App.css";
+import React, { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { Posts, Login, Register } from "./components";
 
-const App = () => {
-  const [posts, setPosts] = useState([]);
+function App() {
+  const [token, setToken] = useState("");
+  console.log(token);
 
-  const fetchHandler = async () => {
-    const response = await fetch("https://strangers-things.herokuapp.com/api/2110-FT-PT-WEB-PT/posts");
-    const results = await response.json();
-    console.log(results);
-    setPosts(results.data.posts)
-  }
-  useEffect(() => {
-    fetchHandler();
-  },[])
-    return (
+  return (
     <div className="App">
-      {posts.length > 0 ? posts.map(post => {
-        return (<div key={post._id}>Description: {post.description}</div>)
-      }):""}
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Posts />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/register"
+          element={<Register token={token} setToken={setToken} />}
+        />
+      </Routes>
     </div>
   );
 }
