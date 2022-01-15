@@ -2,14 +2,17 @@ import React from "react";
 import { useState } from "react";
 import { login } from "../api";
 
-const Login = () => {
+const Login = ({ token, setToken }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const token = await login(username, password);
+    const [newToken, message] = await login(username, password);
     console.log(token);
+    setToken(newToken);
+    setMessage(message);
   };
 
   return (
@@ -29,6 +32,7 @@ const Login = () => {
         }}
       ></input>
       <button>Submit</button>
+      <div>{message}</div>
     </form>
   );
 };

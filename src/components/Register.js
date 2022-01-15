@@ -5,11 +5,14 @@ import { register } from "../api";
 const Register = ({ token, setToken }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const newToken = await register(username, password);
+    const [newToken, message] = await register(username, password);
+    console.log(token);
     setToken(newToken);
+    setMessage(message);
   };
   return (
     <form className="register-form" onSubmit={handleSubmit}>
@@ -28,6 +31,7 @@ const Register = ({ token, setToken }) => {
         }}
       ></input>
       <button>Submit</button>
+      <div>{message}</div>
     </form>
   );
 };

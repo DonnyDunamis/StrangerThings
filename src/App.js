@@ -1,22 +1,39 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { Posts, Login, Register } from "./components";
+import { getUser } from "./api";
 
 function App() {
   const [token, setToken] = useState("");
-  console.log(token);
+  const [user, setUser] = useState({});
+
+  const handleUser = async () => {
+    console.log(token);
+    if (token) {
+      const userObject = await getUser(token);
+      setUser(userObject);
+    } else {
+      setUser({});
+    }
+  };
+  console.log("user", user);
+
+  useEffect(() => {
+    handleUser();
+  }, [token]);
 
   return (
     <div className="App">
       <nav>
+        {token && <h2>Welcome, {user.username}</h2>}
         <Link to="/">Home</Link>
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
       </nav>
       <Routes>
-        <Route path="/" element={<Posts />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Posts token={token} />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
         <Route
           path="/register"
           element={<Register token={token} setToken={setToken} />}

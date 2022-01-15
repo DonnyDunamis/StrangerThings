@@ -1,8 +1,9 @@
 import React from "react";
-import { fetchPosts } from "../api";
 import { useState, useEffect } from "react";
+import { fetchPosts, deletePost, addNewPost } from "../api";
+import { AddPostForm, AddPost, PostSingle } from "./";
 
-const Posts = () => {
+const Posts = ({ token }) => {
   const [posts, setPosts] = useState([]);
 
   const handlePosts = async () => {
@@ -17,13 +18,33 @@ const Posts = () => {
     handlePosts();
   }, []);
 
+  const handleDelete = async (postID) => {
+    try {
+      await deletePost(token, postID);
+      const newPosts = posts.filter((element) => element._id !== postID);
+      setPosts(newPosts);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="posts">
+      {token && <AddPost posts={posts} setPosts={setPosts} token={token} />}
       {posts.length > 0 &&
-        posts.map(({ _id, description }) => {
+        posts.map(({ _id, description, isAuthor }) => {
           return (
             <div className="post" key={_id}>
               {description}
+              {isAuthor && (
+                <button
+                  onClick={() => {
+                    handleDelete(_id);
+                  }}
+                >
+                  Delete
+                </button>
+              )}
             </div>
           );
         })}
