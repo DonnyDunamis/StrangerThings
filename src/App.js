@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import { Posts, Login, Register } from "./components";
+import { Posts, Login, Register, Profile, MessageForm } from "./components";
 import { getUser } from "./api";
 
 function App() {
@@ -25,11 +25,12 @@ function App() {
 
   return (
     <div className="App">
-      <nav>
+      <nav className="App-link">
         {token && <h2>Welcome, {user.username}</h2>}
         <Link to="/">Home</Link>
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
+        <Link to="/profile">Profile</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Posts token={token} />} />
@@ -38,6 +39,8 @@ function App() {
           path="/register"
           element={<Register token={token} setToken={setToken} />}
         />
+        <Route path="/profile" element={<Profile setToken={setToken} />} />
+        <Route path="/messages" element={<MessageForm token={token} />} />
       </Routes>
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { addNewPost } from "../api";
-import { Posts, AddPostForm } from ".";
-import { App } from "../App";
+import { AddPostForm } from ".";
 
 const AddPost = ({ posts, setPosts, token }) => {
   const blankPost = {

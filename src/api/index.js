@@ -1,6 +1,3 @@
-import React from "react";
-import { useState } from "react";
-
 const BASE_URL = "https://strangers-things.herokuapp.com/api/2110-FT-PT-WEB-PT";
 
 export const fetchPosts = async () => {
@@ -84,7 +81,7 @@ export const getUser = async (token) => {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     });
     const { data: userObject } = await response.json();
@@ -100,13 +97,15 @@ export const addNewPost = async (token, post) => {
       method: "POST",
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
-        post
+        post,
       }),
     });
-    const { data: {post: freshPost} } = await response.json();
+    const {
+      data: { post: freshPost },
+    } = await response.json();
     return freshPost;
   } catch (error) {
     console.error(error);
@@ -114,14 +113,36 @@ export const addNewPost = async (token, post) => {
 };
 export const deletePost = async (token, postID) => {
   try {
-  await fetch(`${BASE_URL}/posts/${postID}`, {
-    method: "DELETE",
-    headers: {
-      'Content-type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    } 
-  });
-} catch (error) {
-  console.error(error);
-}
-}
+    await fetch(`${BASE_URL}/posts/${postID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const addMessage = async (token, postID, content) => {
+  try {
+    const response = await fetch(`${BASE_URL}/posts/${postID}/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        message: {
+          content,
+        },
+      }),
+    });
+    const {
+      message: { content: newMessage },
+    } = await response.json();
+    return newMessage();
+  } catch (error) {
+    console.error(error);
+  }
+};

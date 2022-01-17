@@ -1,10 +1,14 @@
+import "../App.css";
 import React from "react";
 import { useState, useEffect } from "react";
-import { fetchPosts, deletePost, addNewPost } from "../api";
-import { AddPostForm, AddPost, PostSingle } from "./";
+import { fetchPosts, deletePost } from "../api";
+import { AddPost } from "./";
+import { useNavigate } from "react-router-dom";
 
 const Posts = ({ token }) => {
   const [posts, setPosts] = useState([]);
+
+  const navigate = useNavigate();
 
   const handlePosts = async () => {
     try {
@@ -32,9 +36,10 @@ const Posts = ({ token }) => {
     <div className="posts">
       {token && <AddPost posts={posts} setPosts={setPosts} token={token} />}
       {posts.length > 0 &&
-        posts.map(({ _id, description, isAuthor }) => {
+        posts.map(({ _id, title, description, isAuthor }) => {
           return (
             <div className="post" key={_id}>
+              <h2>{title}</h2>
               {description}
               {isAuthor && (
                 <button
@@ -43,6 +48,15 @@ const Posts = ({ token }) => {
                   }}
                 >
                   Delete
+                </button>
+              )}
+              {!isAuthor && (
+                <button
+                  onClick={() => {
+                    navigate(`/posts/${_id}/messages`);
+                  }}
+                >
+                  Message
                 </button>
               )}
             </div>
