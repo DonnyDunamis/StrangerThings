@@ -1,8 +1,12 @@
 const BASE_URL = "https://strangers-things.herokuapp.com/api/2110-FT-PT-WEB-PT";
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (token) => {
   try {
-    const response = await fetch(`${BASE_URL}/posts`);
+    const response = await fetch(`${BASE_URL}/posts`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
     const {
       data: { posts },
     } = await response.json();

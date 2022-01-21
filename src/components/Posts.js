@@ -5,22 +5,21 @@ import { fetchPosts, deletePost } from "../api";
 import { AddPost } from "./";
 import { useNavigate } from "react-router-dom";
 
-const Posts = ({ token }) => {
-  const [posts, setPosts] = useState([]);
+const Posts = ({ token, posts, setPosts }) => {
 
   const navigate = useNavigate();
 
-  const handlePosts = async () => {
+  const handlePosts = async (token) => {
     try {
-      const newPosts = await fetchPosts();
+      const newPosts = await fetchPosts(token);
       setPosts(newPosts);
     } catch (error) {
       console.error(error);
     }
   };
   useEffect(() => {
-    handlePosts();
-  }, []);
+    handlePosts(token);
+  }, [token]);
 
   const handleDelete = async (postID) => {
     try {
@@ -50,7 +49,7 @@ const Posts = ({ token }) => {
                   Delete
                 </button>
               )}
-              {!isAuthor && (
+              {!isAuthor && token && (
                 <button
                   onClick={() => {
                     navigate(`/posts/${_id}/messages`);

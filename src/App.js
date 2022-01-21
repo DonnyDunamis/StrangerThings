@@ -7,6 +7,8 @@ import { getUser } from "./api";
 function App() {
   const [token, setToken] = useState("");
   const [user, setUser] = useState({});
+  const [posts, setPosts] = useState([]);
+
 
   const handleUser = async () => {
     console.log(token);
@@ -28,19 +30,22 @@ function App() {
       <nav className="App-link">
         {token && <h2>Welcome, {user.username}</h2>}
         <Link to="/">Home</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/profile">Profile</Link>
+        {!token && <Link to="/login">Login</Link>}
+        {!token && <Link to="/register">Register</Link>}
+        {token && <Link to="/profile">Profile</Link>}
+        {token && <button onClick={()=>{
+          setToken("");
+        }}>Logout</button>}
       </nav>
       <Routes>
-        <Route path="/" element={<Posts token={token} />} />
+        <Route path="/" element={<Posts posts={posts} setPosts={setPosts} token={token} />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
         <Route
           path="/register"
           element={<Register token={token} setToken={setToken} />}
         />
         <Route path="/profile" element={<Profile setToken={setToken} />} />
-        <Route path="/messages" element={<MessageForm token={token} />} />
+        <Route path="/posts/:postID/messages" element={<MessageForm posts={posts} token={token} />} />
       </Routes>
     </div>
   );
