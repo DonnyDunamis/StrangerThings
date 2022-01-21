@@ -28,8 +28,8 @@ function App() {
   return (
     <div className="App">
       <nav className="App-link">
+        {token && <Link to="/">Home</Link>}
         {token && <h2>Welcome, {user.username}</h2>}
-        <Link to="/">Home</Link>
         {!token && <Link to="/login">Login</Link>}
         {!token && <Link to="/register">Register</Link>}
         {token && <Link to="/profile">Profile</Link>}
